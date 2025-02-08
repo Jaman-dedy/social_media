@@ -7,8 +7,8 @@ Auth Repository - Interfaces Auth operations
 import 'package:social_media/features/auth/domain/entities/app_user.dart';
 
 abstract class AuthRepo {
-  Future<AppUser> loginWithEmailPassword(String email, String password);
-  Future<AppUser> registerWithEmailPassword(
+  Future<AppUser?> loginWithEmailPassword(String email, String password);
+  Future<AppUser?> registerWithEmailPassword(
       String name, String email, String password);
 
   Future<void> logout();
