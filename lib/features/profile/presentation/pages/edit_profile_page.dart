@@ -22,6 +22,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Uint8List? webImage;
   final bioTextController = TextEditingController();
 
+  // Select image
   Future<void> pickImage() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.image,

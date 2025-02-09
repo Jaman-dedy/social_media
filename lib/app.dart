@@ -5,6 +5,8 @@ import "package:social_media/features/auth/presentation/cubits/auth_cubit.dart";
 import "package:social_media/features/auth/presentation/cubits/auth_states.dart";
 import "package:social_media/features/auth/presentation/pages/auth_page.dart";
 import "package:social_media/features/home/presentation/pages/home_page.dart";
+import "package:social_media/features/post/data/firebase_post_repo.dart";
+import "package:social_media/features/post/presentation/cubits/post.cubit.dart";
 import "package:social_media/features/profile/data/firebase_profile_repo.dart";
 import "package:social_media/features/profile/presentation/cubits/profile_cubit.dart";
 import "package:social_media/features/storage/data/firebase_storage_repo.dart";
@@ -43,6 +45,9 @@ class MyApp extends StatelessWidget {
   //Storage repo
   final firebaseStorageRepo = FirebaseStorageRepo();
 
+  //Post repo
+  final firebasePostRepo = FirebasePostRepo();
+
   MyApp({super.key});
 
   @override
@@ -60,7 +65,12 @@ class MyApp extends StatelessWidget {
               create: (context) => ProfileCubit(
                     profileRepo: firebaseProfileRepo,
                     storageRepo: firebaseStorageRepo,
-                  ))
+                  )),
+
+          // post cubit
+          BlocProvider<PostCubit>(
+              create: (context) => PostCubit(
+                  postRepo: firebasePostRepo, storageRepo: firebaseStorageRepo))
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -68,6 +78,7 @@ class MyApp extends StatelessWidget {
           home:
               BlocConsumer<AuthCubit, AuthState>(builder: (context, authState) {
             // if Unauthenticated -> auth page (login/register)
+            print("Builder State ==>>>>: ${authState}");
             if (authState is Unauthenticated) {
               return const AuthPage();
             }
