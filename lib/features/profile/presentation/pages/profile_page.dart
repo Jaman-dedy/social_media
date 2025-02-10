@@ -41,168 +41,298 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
-      // loaded
       if (state is ProfileLoaded) {
-        // get loaded user
         final user = state.profileUser;
 
         return Scaffold(
-            appBar: AppBar(
-              title: Text(user.name),
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              actions: [
-                // Edit profile
-                IconButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditProfilePage(user: user),
-                        )),
-                    icon: const Icon(Icons.settings))
-              ],
+          backgroundColor: const Color(0xFFF8FAFF),
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            title: Text(
+              user.name,
+              style: const TextStyle(
+                color: Color(0xFF1E3A8A),
+                fontWeight: FontWeight.bold,
+              ),
             ),
-
-            //Body
-            body: ListView(
-              children: [
-                //email
-                Center(
-                  child: Text(
-                    user.email,
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.primary),
-                  ),
+            actions: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4776E6).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-
-                const SizedBox(height: 25),
-
-                // Profile picture
-                Container(
-                  width: 120, // Smaller size
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  clipBehavior: Clip
-                      .hardEdge, // This ensures the image stays within the circle
-                  child: Image.network(
-                    user.profileImageUrl,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: SizedBox(
-                          width: 30, // Smaller loading indicator
-                          height: 30,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2, // Thinner loading indicator
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.person,
-                      size: 48, // Smaller icon size
-                      color: Theme.of(context).colorScheme.primary,
+                child: IconButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProfilePage(user: user),
                     ),
                   ),
-                ),
-
-                const SizedBox(height: 25),
-
-                // Bio box
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Bio',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                    ],
+                  icon: const Icon(
+                    Icons.edit_rounded,
+                    color: Color(0xFF4776E6),
                   ),
                 ),
+              ),
+            ],
+          ),
+          body: ListView(
+            children: [
+              const SizedBox(height: 20),
 
-                const SizedBox(height: 10),
-
-                BioBox(text: user.bio),
-
-                // Post
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0, top: 25),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Posts',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                    ],
-                  ),
+              // Profile Section
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF4776E6).withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
+                child: Column(
+                  children: [
+                    // Profile picture
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF4776E6),
+                            Color(0xFF2F56E8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF4776E6).withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: ClipOval(
+                        child: Image.network(
+                          user.profileImageUrl,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Colors.white),
+                                strokeWidth: 2,
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(
+                            Icons.person_rounded,
+                            size: 48,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
 
-                const SizedBox(height: 10),
-                // list of uses posts
-                BlocBuilder<PostCubit, PostState>(builder: (context, state) {
-                  //posts loaded..
+                    // Email
+                    Text(
+                      user.email,
+                      style: const TextStyle(
+                        color: Color(0xFF1E3A8A),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Bio Section
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Bio',
+                      style: TextStyle(
+                        color: Color(0xFF1E3A8A),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    BioBox(text: user.bio),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Posts Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Posts',
+                      style: TextStyle(
+                        color: Color(0xFF1E3A8A),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4776E6).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        postCount.toString(),
+                        style: const TextStyle(
+                          color: Color(0xFF4776E6),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Posts List
+              BlocBuilder<PostCubit, PostState>(
+                builder: (context, state) {
                   if (state is PostsLoaded) {
-                    //filter posts by user id
                     final userPosts = state.posts
                         .where((post) => post.userId == widget.uid)
                         .toList();
                     postCount = userPosts.length;
 
+                    if (userPosts.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.post_add_rounded,
+                                size: 48,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No posts yet',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
                     return ListView.builder(
                       itemCount: postCount,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        //get individual post
                         final post = userPosts[index];
-
-                        //return as post tile UI
                         return PostTile(
-                            post: post,
-                            onDeletePressed: () =>
-                                context.read<PostCubit>().deletePost(post.id));
+                          post: post,
+                          onDeletePressed: () =>
+                              context.read<PostCubit>().deletePost(post.id),
+                        );
                       },
                     );
                   }
 
-                  // posts loading
-                  else if (state is PostsLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return const Center(
-                      child: Text('No posts yet..'),
+                  if (state is PostsLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          const Color(0xFF4776E6),
+                        ),
+                      ),
                     );
                   }
-                })
-              ],
-            ));
-      }
 
-      // loading
-      else if (state is ProfileLoading) {
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
+                  return const Center(
+                    child: Text('No posts yet..'),
+                  );
+                },
+              ),
+            ],
           ),
         );
-      } else {
-        return const Center(
-          child: Text("No profile found.."),
+      }
+
+      if (state is ProfileLoading) {
+        return Scaffold(
+          backgroundColor: const Color(0xFFF8FAFF),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    const Color(0xFF4776E6),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Loading profile...',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       }
+
+      return const Center(
+        child: Text("No profile found.."),
+      );
     });
   }
 }

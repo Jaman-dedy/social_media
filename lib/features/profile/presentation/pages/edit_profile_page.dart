@@ -101,46 +101,170 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget buildEditPage() {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFF),
       appBar: AppBar(
-        title: const Text('Edit profile'),
-        foregroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(
+            color: const Color(0xFF1E3A8A),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
-          IconButton(onPressed: updateProfile, icon: const Icon(Icons.upload))
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF4776E6),
+                  Color(0xFF2F56E8),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF4776E6).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
+              onPressed: updateProfile,
+              icon: const Icon(Icons.check_rounded, color: Colors.white),
+            ),
+          ),
         ],
       ),
-      body: Column(
-        children: [
-          Center(
-            child: Container(
-              height: 200,
-              width: 200,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            // Profile Image Section
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                Container(
+                  height: 160,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF4776E6).withOpacity(0.1),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: _buildProfileImage(),
+                  ),
+                ),
+                // Camera Icon Button
+                GestureDetector(
+                  onTap: pickImage,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFF4776E6),
+                          Color(0xFF2F56E8),
+                        ],
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF4776E6).withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.camera_alt_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+
+            // Bio Section
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                shape: BoxShape.circle,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              clipBehavior: Clip.hardEdge,
-              child: _buildProfileImage(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                    child: Text(
+                      'Bio',
+                      style: TextStyle(
+                        color: const Color(0xFF1E3A8A),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      controller: bioTextController,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        hintText: 'Tell us about yourself...',
+                        hintStyle: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 15,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.grey[200]!,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.grey[200]!,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color(0xFF4776E6),
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 25),
-          Center(
-            child: MaterialButton(
-              onPressed: pickImage,
-              color: Colors.blue,
-              child: const Text('Pick Image'),
-            ),
-          ),
-          const Text('Bio'),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: MyTextField(
-              controller: bioTextController,
-              hintText: widget.user.bio,
-              obscureText: false,
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
