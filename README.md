@@ -8,11 +8,17 @@ A modern, offline-first social media application built with Flutter. This app de
 
 ## 🌟 Features
 
-![alt text](<Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.30.54.png>)
-![alt text](<Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.32.28.png>)
-![alt text](<Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.32.49.png>)
-![alt text](<Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.33.08.png>)
-![alt text](<Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.33.31.png>)
+## 📱 Screenshots
+
+<p float="left">
+  <img src="Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.30.54.png" width="150" />
+  <img src="Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.32.28.png" width="150" /> 
+  <img src="Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.32.49.png" width="150" />
+  <img src="Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.33.08.png" width="150" />
+  <img src="Simulator Screenshot - iPhone 16 Pro Max - 2025-02-10 at 11.33.31.png" width="150" />
+</p>
+
+_From left to right: Login, Feed, Create Post, Profile, and Comments screens_
 
 ### Core Features
 
