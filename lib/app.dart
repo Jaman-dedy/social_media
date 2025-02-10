@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
           home:
               BlocConsumer<AuthCubit, AuthState>(builder: (context, authState) {
             // if Unauthenticated -> auth page (login/register)
-            print("Builder State ==>>>>: ${authState}");
+            print("Builder State ==>>>>: $authState");
             if (authState is Unauthenticated) {
               return const AuthPage();
             }
