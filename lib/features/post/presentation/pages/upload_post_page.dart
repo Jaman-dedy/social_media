@@ -73,12 +73,15 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
     // create a new post object
     final newPost = Post(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        userId: currentUser!.uid,
-        userName: currentUser!.name,
-        text: textController.text,
-        imageUrl: '',
-        timestamp: DateTime.now());
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      userId: currentUser!.uid,
+      userName: currentUser!.name,
+      text: textController.text,
+      imageUrl: '',
+      timestamp: DateTime.now(),
+      likes: [],
+      comments: [],
+    );
 
     // post cubit
     final postCubit = context.read<PostCubit>();
@@ -107,7 +110,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<PostCubit, PostState>(
       builder: (context, state) {
-        print("post state : ${state}");
+        print("post state : $state");
         // loading or uploading
 
         if (state is PostsLoading || state is PostsUploading) {
